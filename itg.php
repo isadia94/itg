@@ -1,27 +1,4 @@
-<?php
-
-ini_set ("SMTP","mail.google.com");
-ini_set ("sendmail_from","brianisadia94@gmail.com");
-if (isset($_POST['submit'])){
-  $mailto = "brianisadia94@gmail.com";
-  $from ="anonymous@gmail.com";
-  $subject = $_POST['subject'];
-  $department = $_POST['department'];
-  $headers = "From: anonymous@gmail.com" . "\r\n";
-  $feedback = $_POST['feedback'];
-  $result = mail($mailto, $department, $headers, $subject, $feedback);
-
-if($result){
-    echo '<script type="text/javascript">alert("message submitted successfully")</script>';
-  }else{
-    echo '<script type="text/javascript">alert(Failed to submit try again later")</script>';
-  }
-}
-
-?>
-
-
-
+<?php session_start()?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +28,7 @@ if($result){
         </p>
       </div>
       <div>
-        <form method="post" action="">
+        <form method="post" action="send_email.php">
           <div class="flex flex-col mb-10">
             <label class="text-sm">Subject</label>
             <input type="text" class="subject__input" required name="subject" />
@@ -66,6 +43,24 @@ if($result){
           </div>
           <button type="submit" name="submit">SUBMIT</button>
         </form>
+        <br/>
+
+        <?php
+				if(ISSET($_SESSION['status'])){
+					if($_SESSION['status'] == "ok"){
+			?>
+						<div class="alert alert-info"><?php echo $_SESSION['result']?></div>
+			<?php
+					}else{
+			?>
+						<div class="alert alert-danger"><?php echo $_SESSION['result']?></div>
+			<?php
+					}
+					
+					unset($_SESSION['result']);
+					unset($_SESSION['status']);
+				}
+			?>
       </div>
     </div>
   </body>
